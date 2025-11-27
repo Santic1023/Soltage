@@ -1,7 +1,9 @@
 'use client';
+
+// Importa el componentes
 import Image from "next/image";
 import Head from "next/head";
-import Link from "next/link"; // Importa el componente Link
+import Link from "next/link";
 import React, { useEffect, useRef } from 'react';
 import PieChart from "@/components/PieChart";
 import CSVCharts from "@/components/CSVCharts";
@@ -13,7 +15,6 @@ export default function Graficos() {
     <>
       <Head>
         <title>Gráficos - Soltage</title>
-        <link rel="icon" href="/media/favicon.ico" />
       </Head>
       <main className="bg-[#0d1117] text-white font-sans leading-relaxed">
         {/* Header */}
@@ -23,9 +24,9 @@ export default function Graficos() {
               Inicio
             </button>
           </Link>
-          <button className="bg-white text-gray-800 font-medium px-4 py-2 rounded-full shadow hover:bg-gray-100 transition">
-            Servicios
-          </button>
+          <Link href="/estimation" className="bg-white text-gray-800 font-medium px-4 py-2 rounded-full shadow hover:bg-gray-100 transition">
+            Estimación
+          </Link>
           <Link href="/contact">
             <button className="bg-white text-gray-800 font-medium px-4 py-2 rounded-full shadow hover:bg-gray-100 transition">
               Contacto
@@ -34,11 +35,11 @@ export default function Graficos() {
         </nav>
         <header className="h-screen bg-gradient-to-br from-[#00b894] to-[#0984e3] flex flex-col justify-center items-center text-center p-5">
           <Image
-                      src="/media/Graficos.png"
-                      alt="Img Graficis"
-                      width={600}
-                      height={600}
-                      className="mb-2 animate-fadeInUp"
+              src="/media/Graficos.png"
+              alt="Img Graficis"
+              width={600}
+              height={600}
+              className="mb-2 animate-fadeInUp"
           />
           <h1 className="text-4xl font-bold">Gráficos e Información</h1>
           <p className="mt-4 text-lg">
