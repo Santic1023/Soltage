@@ -20,7 +20,7 @@ export default function CSVCharts() {
       const firstYear = Object.keys(grouped[defaultCountry])[0];
       const exampleEntry = grouped[defaultCountry][firstYear];
 
-      // Usa nombres explícitos en lugar de slice
+      // Nombres de las columnas que se quieren mostrar (deben coincidir con los nombres en el CSV)
       const keys = [
         "Geo Biomass Other - TWh",
         "Solar Generation - TWh",
