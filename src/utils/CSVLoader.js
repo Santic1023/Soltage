@@ -63,3 +63,77 @@ export async function loadCSV(...paths) {
     return {};
   }
 }
+
+export async function loadCSVData(filePath) {
+  try {
+    const response = await fetch(filePath);
+    const csvText = await response.text();
+    const lines = csvText.split('\n');
+    const headers = lines[0].split(',');
+    
+    // Obtener el último año disponible (última línea con datos)
+    const lastLine = lines[lines.length - 2].split(','); // -2 porque la última línea suele estar vacía
+    
+    // Crear objeto con los datos del último año
+    const lastYearData = {};
+    headers.forEach((header, index) => {
+      if (index > 0) { // Saltar la primera columna (año)
+        lastYearData[header] = parseFloat(lastLine[index]) || 0;
+      }
+    });
+
+    return {
+      headers: headers.slice(1), // Excluir la columna de año
+      lastYearData
+    };
+  } catch (error) {
+    console.error(`Error cargando el archivo CSV ${filePath}:`, error);
+    return {
+      headers: [],
+      lastYearData: {}
+    };
+  }
+}
+
+export async function loadAllCSVData() {
+  const files = [
+    '/media/17-installed-geothermal-capacity.csv',
+    '/media/13-installed-solar-PV-capacity.csv',
+    '/media/09-cumulative-installed-wind-energy-capacity-gigawatts.csv',
+    '/media/06-hydro-share-energy.csv'
+  ];
+
+  try {
+    const [geothermal, solar, wind, hydro] = await Promise.all(
+      files.map(file => loadCSVData(file))
+    );
+
+    // Obtener países comunes en todos los archivos
+    const commonCountries = geothermal.headers.filter(country =>
+      solar.headers.includes(country) &&
+      wind.headers.includes(country) &&
+      hydro.headers.includes(country)
+    );
+
+    return {
+      countries: commonCountries,
+      data: {
+        geothermal,
+        solar,
+        wind,
+        hydro
+      }
+    };
+  } catch (error) {
+    console.error('Error cargando los datos CSV:', error);
+    return {
+      countries: [],
+      data: {
+        geothermal: { headers: [], lastYearData: {} },
+        solar: { headers: [], lastYearData: {} },
+        wind: { headers: [], lastYearData: {} },
+        hydro: { headers: [], lastYearData: {} }
+      }
+    };
+  }
+}
